@@ -5,3 +5,5 @@ Based on the actual conditions in rural areas, it is of great practical signific
 **0.2 Requirements of the Problem**
 
 Assuming that the future expected sales volume, planting costs, yield per acre, and sales prices of various crops remain stable compared to 2023, and that the crops planted each season are sold within that season. If the total production of a certain crop per season exceeds the corresponding expected sales volume, the excess portion cannot be sold normally. Please provide the optimal crop planting plans for the village from 2024 to 2030 for the following two scenarios, and fill in the results in result11.xlsx and result12.xlsx respectively (see Attachment 3 for the template files).
+
+【Note】**Due to the large scale of the mathematical optimization problem, please purchase, download, and install the intelligent optimizer Gurobi.**
