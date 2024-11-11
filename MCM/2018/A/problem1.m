@@ -38,4 +38,4 @@ plot(temperature);
 legend('Actual temperature','Calculate temperature');
 xlabel('时间/s');
 ylabel('温度/摄氏度');
-
+plot_simulation(U);
