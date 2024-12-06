@@ -11,7 +11,7 @@ h=zeros(m,n);
 for i=1:m
     for j=1:n
 
-       h(i,j)=D-d(j)*cosd(pi-beta(i))*tand(alpha);
+       h(i,j)=D-d(j)*cosd(180-beta(i))*tand(alpha);
     end
 end
 W=zeros(m,n);
