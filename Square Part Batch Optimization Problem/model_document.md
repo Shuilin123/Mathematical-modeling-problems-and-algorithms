@@ -130,29 +130,31 @@ $$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\}$$
 
 ### 3.2 数学规划标准形式
 
-$$
-\min \sum_{k \in K} u_k \tag{1}
-$$
+### 3.2 数学规划标准形式
 
 $$
+\begin{align}
+\min \quad & \sum_{k \in K} u_k \tag{1} \\
+\text{s.t.} \quad &
 \begin{cases}
-\displaystyle\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2} \\[4pt]
-l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3} \\[4pt]
-w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4} \\[4pt]
-p_{ik}^x + l_i' \leq L + M\left(1 - z_{ik}\right), \quad \forall i \in I,\ k \in K \tag{5} \\[4pt]
-p_{ik}^y + w_i' \leq W + M\left(1 - z_{ik}\right), \quad \forall i \in I,\ k \in K \tag{6} \\[4pt]
-p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M\left(1-\alpha_{i_1i_2k}^1\right), \quad \forall i_1 < i_2,\ k \in K \tag{7} \\[4pt]
-p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M\left(1-\alpha_{i_1i_2k}^2\right), \quad \forall i_1 < i_2,\ k \in K \tag{8} \\[4pt]
-p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M\left(1-\alpha_{i_1i_2k}^3\right), \quad \forall i_1 < i_2,\ k \in K \tag{9} \\[4pt]
-p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M\left(1-\alpha_{i_1i_2k}^4\right), \quad \forall i_1 < i_2,\ k \in K \tag{10} \\[4pt]
-\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2,\ k \in K \tag{11} \\[4pt]
-\sum_{s} h_s \leq W,\quad h_s > 0 \tag{12} \\[4pt]
-w_{i_1}' = w_{i_2}', \quad \forall i_1,i_2 \in \text{Stack}_t \tag{13} \\[4pt]
-\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14} \\[4pt]
-z_{ik} \leq u_k, \quad \forall i \in I,\ k \in K \tag{15} \\[4pt]
-p_{ik}^x \geq 0,\ p_{ik}^y \geq 0, \quad \forall i \in I,\ k \in K \tag{16} \\[4pt]
-z_{ik},\ u_k,\ o_i \in \{0, 1\},\quad \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}
+\displaystyle\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \\[4pt]
+l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \\[4pt]
+w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \\[4pt]
+p_{ik}^x + l_i' \leq L + M\left(1 - z_{ik}\right), \quad \forall i \in I,\ k \in K \\[4pt]
+p_{ik}^y + w_i' \leq W + M\left(1 - z_{ik}\right), \quad \forall i \in I,\ k \in K \\[4pt]
+p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M\left(1-\alpha_{i_1i_2k}^1\right), \quad \forall i_1 < i_2,\ k \in K \\[4pt]
+p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M\left(1-\alpha_{i_1i_2k}^2\right), \quad \forall i_1 < i_2,\ k \in K \\[4pt]
+p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M\left(1-\alpha_{i_1i_2k}^3\right), \quad \forall i_1 < i_2,\ k \in K \\[4pt]
+p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M\left(1-\alpha_{i_1i_2k}^4\right), \quad \forall i_1 < i_2,\ k \in K \\[4pt]
+\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2,\ k \in K \\[4pt]
+\sum_{s} h_s \leq W,\quad h_s > 0 \\[4pt]
+w_{i_1}' = w_{i_2}', \quad \forall i_1,i_2 \in \text{Stack}_t \\[4pt]
+\sum_{i \in \text{Stack}_t} l_i' \leq L \\[4pt]
+z_{ik} \leq u_k, \quad \forall i \in I,\ k \in K \\[4pt]
+p_{ik}^x \geq 0,\ p_{ik}^y \geq 0, \quad \forall i \in I,\ k \in K \\[4pt]
+z_{ik},\ u_k,\ o_i \in \{0, 1\},\quad \alpha_{i_1i_2k}^r \in \{0, 1\}
 \end{cases}
+\end{align}
 $$
 
 ---
