@@ -37,7 +37,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
   约束：
   - i.在相同栈（stack）里的产品项（item）的宽度（或长度）应该相同；
   - ii.最终切割生成的产品项是完整的，非拼接而成。
-
+最后求解混合整数规划得到材料切割结果，样例如下:
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(1).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(2).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(3).png)
@@ -45,13 +45,13 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 ### 问题2 订单组批问题
 
-   要求建立混合整数规划模型，对数据集B中全部的订单进行组批，然后对每个批次进行独立排样，在满足订单需求和相关约束条件下，使得板材原片的用量尽可能少。
+   通过混合整数规划模型，对数据集B中全部的订单进行组批，然后对每个批次进行独立排样，在满足订单需求和相关约束条件下，使得板材原片的用量尽可能少。
 在满足子问题1约束的基础上进一步要求：
 - i 每份订单当且仅当出现在一个批次中；
 - ii 每个批次中的相同材质的产品项（item）才能使用同一块板材原片进行排样；
 - iii 为保证加工环节快速流转，每个批次产品项（item）总数不能超过限定值；
 - iv 因工厂产能限制，每个批次产品项（item）的面积总和不能超过限定值；
-
+得到同一材料切割结果，样例如下:
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub2/output_images/B_board%20(1).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub2/output_images/B_board%20(2).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub2/output_images/B_board%20(3).png)
