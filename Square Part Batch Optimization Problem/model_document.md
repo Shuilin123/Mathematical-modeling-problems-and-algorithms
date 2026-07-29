@@ -206,34 +206,20 @@ $x_{ij}$ 为0-1决策变量，表示产品项 $i$ 是否分配到批次 $j$。
 $$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J$$
 
 ### 4.2 数学规划标准形式
-$$
- \min \sum_{j \in J} \sum_{k \in K_j} u_{jk}
-$$
 
 $$
-\text{s.t.}
-$$
-
-$$
-\text{约束(2)-(17)（继承子问题1全部约束）}
-$$
-$$
-\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}
-$$
-$$
-x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o \cap I_m,\ \forall j \in J,\ \forall m \in M \tag{20}
-$$
-$$
-\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}
-$$
-$$
-\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}
-$$
-$$
-z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2},\ \forall i_1, i_2 \in I,\ k \in K \tag{23}
-$$
-$$
-x_{ij} \in \{0, 1\}, \quad \forall i \in I,\ j \in J \tag{24}
+\tag{18} \min \displaystyle\sum_{j \in J} \sum_{k \in K_j} u_{jk}
+\qquad
+\text{s.t.} \quad
+\begin{cases}
+\text{约束(2)-(17)（继承子问题1全部约束）} \\
+\displaystyle\sum_{j \in J} x_{ij} = 1, & \forall i \in I \tag{19} \\
+x_{i_1j} = x_{i_2j}, & \forall i_1, i_2 \in I_o \cap I_m,\ \forall j \in J,\ \forall m \in M \tag{20} \\
+\displaystyle\sum_{i \in I} x_{ij} \leq N_{\max}, & \forall j \in J \tag{21} \\
+\displaystyle\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, & \forall j \in J \tag{22} \\
+z_{i_1k} + z_{i_2k} \leq 1, & \text{if } m_{i_1} \neq m_{i_2},\ \forall i_1, i_2 \in I,\ k \in K \tag{23} \\
+x_{ij} \in \{0, 1\}, & \forall i \in I,\ j \in J \tag{24}
+\end{cases}
 $$
 
 ---
