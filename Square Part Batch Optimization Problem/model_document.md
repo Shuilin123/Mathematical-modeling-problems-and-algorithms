@@ -1,4 +1,4 @@
-#                                              方形件组批优化问题 
+# 方形件组批优化问题
 
 ## 一、问题概述
 
@@ -54,41 +54,41 @@
 
 ### 3.1 数学规划标准形式
 
-$$\min \sum_{k \in K} u_k \tag{1}$$
+$\min \sum_{k \in K} u_k \tag{1}$
 
-$$\text{s.t.}$$
+$\text{s.t.}$
 
-$$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2}$$
+$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2}$
 
-$$l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3}$$
+$l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3}$
 
-$$w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4}$$
+$w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4}$
 
-$$p_{ik}^x + l_i' \leq L \cdot u_k, \quad \forall i \in I, k \in K \tag{5}$$
+$p_{ik}^x + l_i' \leq L + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{5}$
 
-$$p_{ik}^y + w_i' \leq W \cdot u_k, \quad \forall i \in I, k \in K \tag{6}$$
+$p_{ik}^y + w_i' \leq W + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{6}$
 
-$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), \quad \forall i_1 < i_2, k \in K \tag{7}$$
+$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), \quad \forall i_1 < i_2, k \in K \tag{7}$
 
-$$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), \quad \forall i_1 < i_2, k \in K \tag{8}$$
+$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), \quad \forall i_1 < i_2, k \in K \tag{8}$
 
-$$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), \quad \forall i_1 < i_2, k \in K \tag{9}$$
+$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), \quad \forall i_1 < i_2, k \in K \tag{9}$
 
-$$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), \quad \forall i_1 < i_2, k \in K \tag{10}$$
+$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), \quad \forall i_1 < i_2, k \in K \tag{10}$
 
-$$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2, k \in K \tag{11}$$
+$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2, k \in K \tag{11}$
 
-$$\sum_{s} h_s \leq W, \quad h_s > 0 \tag{12}$$
+$\sum_{s} h_s \leq W, \quad h_s > 0 \tag{12}$
 
-$$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t \tag{13}$$
+$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t \tag{13}$
 
-$$\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14}$$
+$\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14}$
 
-$$z_{ik} \leq u_k, \quad \forall i \in I, k \in K \tag{15}$$
+$z_{ik} \leq u_k, \quad \forall i \in I, k \in K \tag{15}$
 
-$$p_{ik}^x \geq 0, \quad p_{ik}^y \geq 0, \quad \forall i \in I, k \in K \tag{16}$$
+$p_{ik}^x \geq 0, \quad p_{ik}^y \geq 0, \quad \forall i \in I, k \in K \tag{16}$
 
-$$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}$$
+$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}$
 
 ### 3.2 约束条件说明
 
@@ -102,13 +102,13 @@ $l_i'$ 和 $w_i'$ 为考虑旋转后的有效长宽。当 $o_i = 0$ 时不旋转
 
 #### （3）原片边界约束（式5-6）
 
-产品项不能超出原片边界。仅当原片 $k$ 被使用（$u_k = 1$）时，产品项才能排布其上；若 $u_k = 0$，则式(5)(6)强制 $p_{ik}^x + l_i' \leq 0$ 且 $p_{ik}^y + w_i' \leq 0$，即产品项不会被分配到未使用的原片。
+产品项不能超出原片边界。采用大M法：当产品项 $i$ 排布在原片 $k$ 上（$z_{ik} = 1$）时，式(5)(6)退化为边界约束 $p_{ik}^x + l_i' \leq L$ 和 $p_{ik}^y + w_i' \leq W$；当 $z_{ik} = 0$ 时，大M使约束自动松弛，坐标变量不受限制。其中 $M$ 为足够大的常数（可取 $M = \max(L, W)$）。
 
 #### （4）不重叠约束（式7-11）
 
 对于同一原片 $k$ 上的任意两个产品项 $i_1, i_2$，至少满足以下四个方向之一的不重叠条件：
 
-$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x \;\lor\; p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y \;\lor\; p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y$$
+$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x \;\lor\; p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y \;\lor\; p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y$
 
 使用大M法将析取约束线性化为式(7)-(11)，其中 $M$ 为足够大的常数，$\alpha_{i_1i_2k}^r \in \{0,1\}$ 为辅助0-1变量，式(11)确保至少一个方向的不重叠条件被激活。
 
@@ -130,23 +130,23 @@ $$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i
 
 ### 4.1 数学规划标准形式
 
-$$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk} \tag{18}$$
+$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk} \tag{18}$
 
-$$\text{s.t.}$$
+$\text{s.t.}$
 
 式(2)-(17)（继承子问题1全部约束），以及：
 
-$$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}$$
+$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}$
 
-$$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o, \forall j \in J \tag{20}$$
+$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o \cap I_m, \forall j \in J, \forall m \in M \tag{20}$
 
-$$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}$$
+$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}$
 
-$$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}$$
+$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}$
 
-$$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K \tag{23}$$
+$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K \tag{23}$
 
-$$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$$
+$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$
 
 ### 4.2 约束条件说明
 
@@ -156,9 +156,9 @@ $$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$$
 
 每个产品项当且仅当分配到一个批次，确保所有产品项都被处理且不重复分配。
 
-#### （2）订单完整性约束（式20）
+#### （2）材质内订单完整性约束（式20）
 
-若订单 $o$ 中任一产品项分配到批次 $j$，则该订单所有产品项必须分配到同一批次，确保订单不被拆分。
+同一订单中相同材质的产品项必须分配到同一批次。由于同一原片只能排布相同材质的产品项（式23），算法按材质分别组批，同订单不同材质的项可分到不同批次，但同材质的项必须保持完整，确保同材质的订单项不被拆分。
 
 #### （3）批次产品项数约束（式21）
 
@@ -180,7 +180,7 @@ $x_{ij}$ 为0-1决策变量，表示产品项 $i$ 是否分配到批次 $j$。
 
 ## 五、板材利用率
 
-$$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} \tag{25}$$
+$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} \tag{25}$
 
 ---
 
@@ -369,7 +369,7 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 **评分函数设计**：
 
-$$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}} \tag{26}$$
+$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}} \tag{26}$
 
 评分越小表示浪费越少，优先选择。新条带有额外惩罚系数0.1，避免过早开新条带。
 
@@ -475,7 +475,7 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 ### 8.1 问题分析
 
 子问题2在排样优化基础上增加组批决策，需满足：
-- 每份订单当且仅当出现在一个批次中
+- 每份订单在同一材质组内当且仅当出现在一个批次中（跨材质可分批）
 - 每个批次产品项总数 $\leq N_{\max} = 1000$
 - 每个批次产品项面积总和 $\leq A_{\max} = 250 \text{ m}^2$
 - 同一原片只能排布相同材质的产品项
@@ -484,13 +484,13 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 **核心思路**：按材质分组，每种材质内按订单面积降序贪心装批。
 
-> 1. 统计每个订单的产品项数和总面积
-> 2. 按材质对订单分组（一个订单可能包含多种材质，按材质拆分）
+> 1. 统计每个订单的产品项总数和总面积（跨所有材质合计）
+> 2. 按材质对订单分组（一个订单可能包含多种材质，按材质拆分，同一订单可出现在多个材质组中）
 > 3. 对每种材质：
 >    a. 将该材质的订单按总面积降序排列
 >    b. 初始化当前批次：$\text{count}=0,\; \text{area}=0$
 >    c. 对每个订单（面积降序）：
->       - 若 $\text{count} + \text{order\_count} \leq 1000$ 且 $\text{area} + \text{order\_area} \leq 250\text{m}^2$：
+>       - 若 $\text{count} + \text{order\_count} \leq 1000$ 且 $\text{area} + \text{order\_area} \leq 250\text{m}^2$（order_count和order_area为该订单跨所有材质的总量，非仅当前材质部分）：
 >         加入当前批次
 >       - 否则：保存当前批次，创建新批次
 > 4. 返回所有批次
@@ -551,7 +551,7 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 **子问题2利用率相对较低的原因**：
 - 多材质约束：同一原片只能放相同材质，限制了组合自由度
 - 批次容量约束：每批≤1000项/250m²，可能导致小批次
-- 订单完整性约束：同一订单必须同批，无法拆分优化
+- 材质内订单完整性约束：同一订单同材质的项必须同批，跨材质可分批但增加组批复杂度
 - 组批与排样的耦合：当前采用先组批后排样的两阶段策略，未考虑排样效果对组批的反馈
 
 ---
