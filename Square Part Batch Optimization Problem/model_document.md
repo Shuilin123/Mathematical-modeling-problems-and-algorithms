@@ -130,7 +130,7 @@ $$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\}$$
 
 ### 3.2 数学规划标准形式
 $$
-\tag{1} \min \sum_{k \in K} u_k
+ \min \sum_{k \in K} u_k
 $$
 
 $$
