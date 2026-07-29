@@ -54,41 +54,41 @@
 
 ### 3.1 数学规划标准形式
 
-$\min \sum_{k \in K} u_k \tag{1}$
+$$\min \sum_{k \in K} u_k \tag{1}$$
 
-$\text{s.t.}$
+$$\text{s.t.}$$
 
-$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2}$
+$$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2}$$
 
-$l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3}$
+$$l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3}$$
 
-$w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4}$
+$$w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4}$$
 
-$p_{ik}^x + l_i' \leq L + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{5}$
+$$p_{ik}^x + l_i' \leq L + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{5}$$
 
-$p_{ik}^y + w_i' \leq W + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{6}$
+$$p_{ik}^y + w_i' \leq W + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{6}$$
 
-$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), \quad \forall i_1 < i_2, k \in K \tag{7}$
+$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), \quad \forall i_1 < i_2, k \in K \tag{7}$$
 
-$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), \quad \forall i_1 < i_2, k \in K \tag{8}$
+$$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), \quad \forall i_1 < i_2, k \in K \tag{8}$$
 
-$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), \quad \forall i_1 < i_2, k \in K \tag{9}$
+$$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), \quad \forall i_1 < i_2, k \in K \tag{9}$$
 
-$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), \quad \forall i_1 < i_2, k \in K \tag{10}$
+$$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), \quad \forall i_1 < i_2, k \in K \tag{10}$$
 
-$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2, k \in K \tag{11}$
+$$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2, k \in K \tag{11}$$
 
-$\sum_{s} h_s \leq W, \quad h_s > 0 \tag{12}$
+$$\sum_{s} h_s \leq W, \quad h_s > 0 \tag{12}$$
 
-$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t \tag{13}$
+$$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t \tag{13}$$
 
-$\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14}$
+$$\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14}$$
 
-$z_{ik} \leq u_k, \quad \forall i \in I, k \in K \tag{15}$
+$$z_{ik} \leq u_k, \quad \forall i \in I, k \in K \tag{15}$$
 
-$p_{ik}^x \geq 0, \quad p_{ik}^y \geq 0, \quad \forall i \in I, k \in K \tag{16}$
+$$p_{ik}^x \geq 0, \quad p_{ik}^y \geq 0, \quad \forall i \in I, k \in K \tag{16}$$
 
-$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}$
+$$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}$$
 
 ### 3.2 约束条件说明
 
@@ -108,7 +108,7 @@ $l_i'$ 和 $w_i'$ 为考虑旋转后的有效长宽。当 $o_i = 0$ 时不旋转
 
 对于同一原片 $k$ 上的任意两个产品项 $i_1, i_2$，至少满足以下四个方向之一的不重叠条件：
 
-$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x \;\lor\; p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y \;\lor\; p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y$
+$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x \;\lor\; p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y \;\lor\; p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y$$
 
 使用大M法将析取约束线性化为式(7)-(11)，其中 $M$ 为足够大的常数，$\alpha_{i_1i_2k}^r \in \{0,1\}$ 为辅助0-1变量，式(11)确保至少一个方向的不重叠条件被激活。
 
@@ -130,23 +130,23 @@ $p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i_
 
 ### 4.1 数学规划标准形式
 
-$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk} \tag{18}$
+$$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk} \tag{18}$$
 
-$\text{s.t.}$
+$$\text{s.t.}$$
 
 式(2)-(17)（继承子问题1全部约束），以及：
 
-$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}$
+$$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}$$
 
-$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o \cap I_m, \forall j \in J, \forall m \in M \tag{20}$
+$$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o \cap I_m, \forall j \in J, \forall m \in M \tag{20}$$
 
-$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}$
+$$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}$$
 
-$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}$
+$$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}$$
 
-$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K \tag{23}$
+$$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K \tag{23}$$
 
-$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$
+$$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$$
 
 ### 4.2 约束条件说明
 
@@ -180,7 +180,7 @@ $x_{ij}$ 为0-1决策变量，表示产品项 $i$ 是否分配到批次 $j$。
 
 ## 五、板材利用率
 
-$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} \tag{25}$
+$$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} \tag{25}$$
 
 ---
 
@@ -369,7 +369,7 @@ $\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in 
 
 **评分函数设计**：
 
-$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}} \tag{26}$
+$$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}} \tag{26}$$
 
 评分越小表示浪费越少，优先选择。新条带有额外惩罚系数0.1，避免过早开新条带。
 
