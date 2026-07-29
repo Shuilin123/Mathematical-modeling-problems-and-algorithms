@@ -9,7 +9,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 
 
-!\[problem1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/problem1.png)
+![problem1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/problem1.png)
 
 
 
@@ -19,7 +19,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 
 
-!\[problem1\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/problem1\_1.png)
+![problem1\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/problem1\_1.png)
 
 
 
@@ -27,7 +27,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 
 
-!\[griaph](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/griaph.gif)
+![griaph](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/griaph.gif)
 
 
 
@@ -35,11 +35,11 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 
 
-!\[problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/problem2\_1.png)
+![problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2018/A/problem2\_1.png)
 
 # 多波束测线问题
 
-!\[problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(1).jpg)
-!\[problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(2).jpg)
-!\[problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(3).jpg)
-!\[problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(4).jpg)
+![problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(1).jpg)
+![problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(2).jpg)
+![problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(3).jpg)
+![problem2\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/MCM/2023/B/fig/MCM-2023%20(4).jpg)
