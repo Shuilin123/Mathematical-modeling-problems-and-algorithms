@@ -31,7 +31,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 ## 三、方形件组批优化
 
-### 问题1 排样优化问题。
+### 问题1 排样优化问题
   
   在满足生产订单需求和相关约束条件下的结果。
   约束：
@@ -43,7 +43,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(3).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(4).png)
 
-### 问题2 订单组批问题。
+### 问题2 订单组批问题
 
    要求建立混合整数规划模型，对数据集B中全部的订单进行组批，然后对每个批次进行独立排样，在满足订单需求和相关约束条件下，使得板材原片的用量尽可能少。
 在满足子问题1约束的基础上进一步要求：
