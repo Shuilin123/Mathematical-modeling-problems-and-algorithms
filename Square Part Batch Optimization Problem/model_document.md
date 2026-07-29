@@ -1,4 +1,4 @@
-# 方形件组批优化问题 — 数学建模文档
+#                                              方形件组批优化问题 
 
 ## 一、问题概述
 
@@ -180,9 +180,44 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 ## 七、排样优化算法
 
+### 7.0 数据模型
+
+排样算法使用以下核心数据结构（定义在 [`solver/models.py`](solver/models.py)）：
+
+**`PlacedItem`**：已放置的产品项
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `item_id` | int | 产品ID |
+| `material` | str | 材质 |
+| `x` | float | 左下角x坐标 (mm) |
+| `y` | float | 左下角y坐标 (mm) |
+| `length` | float | x方向长度 (mm) |
+| `width` | float | y方向长度 (mm) |
+| `rotated` | bool | 是否旋转90° |
+| `order` | str | 订单号 |
+
+**`CuttingBoard`**：一块原片的排样结果
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `board_id` | int | 原片序号 |
+| `material` | str | 材质 |
+| `plate_length` | float | 原片长度 (mm) |
+| `plate_width` | float | 原片宽度 (mm) |
+| `placed_items` | List[PlacedItem] | 已放置产品项列表 |
+| `used_area` | float (property) | 已使用面积 |
+| `total_area` | float (property) | 原片总面积 |
+| `utilization` | float (property) | 利用率 |
+
 ### 7.1 算法总体框架
 
-排样算法采用**增强版3阶段齐头切排样器**（`EnhancedGuillotinePacker`），核心思路为：
+排样算法采用**两层类继承结构**：
+
+- **基础类 `GuillotineCutPacker`**：实现3阶段齐头切排样的核心逻辑（朝向决策、宽度聚类、栈构建、原片装载），尝试3组容差 × 3种朝向 = 9种组合选优
+- **增强类 `EnhancedGuillotinePacker`**：继承基础类，扩展为4组容差 × 3种朝向 = 12种组合 + 2种Shelf算法 + 20次随机扰动 × 2种朝向 = 40种组合，共54种方案比较选优，并增加原片合并后处理
+
+核心思路为：
 
 1. **朝向决策**：确定每个产品项在原片上的放置朝向（是否旋转90°）
 2. **宽度聚类**：将相近宽度的产品项归并为同一组，减少栈数量
@@ -203,9 +238,29 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 **朝向选择策略**：
 
-- **`width_first`**：优先短边作为y方向（$ew$），有利于栈宽度一致
-- **`length_first`**：优先长边作为y方向，可能产生更深的栈
-- **`hybrid`**：混合策略，根据面积特征选择
+- **`width_first`**：优先短边作为y方向（$ew$），有利于栈宽度一致。当 $l \geq w$ 时选择朝向A（$ew = w$），否则选择朝向B（$ew = l$）
+- **`length_first`**：优先长边作为y方向，可能产生更深的栈。当 $l < w$ 时选择朝向A（$ew = w$），否则选择朝向B（$ew = l$）
+- **`hybrid`**：当前实现与`width_first`策略一致（$prefer\_a = (l \geq w)$），保留接口以供后续扩展
+
+**朝向选择算法**：
+
+```
+对每个产品项item(l, w)：
+1. 计算两种朝向：
+   朝向A: el=l, ew=w, rotated=False
+   朝向B: el=w, ew=l, rotated=True
+2. 检查可行性：fits_a = (el_a≤L 且 ew_a≤W), fits_b = (el_b≤L 且 ew_b≤W)
+3. 根据策略确定优先朝向：
+   width_first: prefer_a = (l ≥ w)
+   length_first: prefer_a = (l < w)
+   hybrid: prefer_a = (l ≥ w)
+4. 选择朝向（优先使用策略偏好的可行朝向）：
+   若 prefer_a 且 fits_a → 选朝向A
+   否则若 (¬prefer_a) 且 fits_b → 选朝向B
+   否则若 fits_a → 选朝向A
+   否则若 fits_b → 选朝向B
+   否则 → 选溢出较小的朝向
+```
 
 **关键约束**：$el \leq L$ 且 $ew \leq W$。若优先朝向超出原片范围，自动切换到另一朝向。
 
@@ -232,7 +287,9 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 4. 对每个聚类用BFD策略装栈
 ```
 
-**容差参数**：算法尝试4组容差参数，比较选优：
+**容差参数**：
+
+增强版排样器（`EnhancedGuillotinePacker`）尝试4组容差参数：
 
 | 编号 | tol_pct | tol_min | 适用场景 |
 |------|---------|---------|---------|
@@ -240,6 +297,14 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 | 2 | 1% | 2mm | 小容差，平衡精度与归并 |
 | 3 | 2% | 5mm | 中等容差，适度归并 |
 | 4 | 3% | 8mm | 较大容差，强归并 |
+
+基础版排样器（`GuillotineCutPacker`）尝试3组容差参数：
+
+| 编号 | tol_pct | tol_min | 适用场景 |
+|------|---------|---------|---------|
+| 1 | 2% | 5mm | 中等容差 |
+| 2 | 5% | 10mm | 较大容差 |
+| 3 | 10% | 20mm | 大容差，强归并 |
 
 #### 7.3.3 BFD装栈
 
@@ -304,15 +369,33 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 #### 7.5.1 按面积降序Shelf算法（`_pack_shelf_area_desc`）
 
-- 产品项按面积 $el \times ew$ 降序排列
-- 维护shelf列表，每个shelf有高度和已用长度
-- 对每个项，优先放入高度浪费最小的已有shelf
-- 无法放入时创建新shelf
+采用`width_first`朝向策略，产品项按面积 $el \times ew$ 降序排列。
+
+```
+1. 朝向决策：_orient_items(items, 'width_first')
+2. 按面积降序排列：sorted(oriented, key=-(el × ew))
+3. 初始化：boards=[], shelves=[], current_y=0
+4. 对每个产品项item（按面积降序）：
+   a. 在已有shelf中找最佳匹配：
+      遍历所有shelf，找满足 ew ≤ shelf.height 且 used_l + el ≤ L 的shelf
+      选择高度浪费 (shelf.height - ew) 最小的shelf
+   b. 若找到最佳shelf：将item放入该shelf，更新used_l
+   c. 若未找到：
+      i.  若 current_y + ew ≤ W：创建新shelf，current_y += ew
+      ii. 否则：将当前shelves封装为原片，创建新原片和新shelf
+5. 将剩余shelves封装为原片
+6. 返回boards
+```
 
 #### 7.5.2 按长边降序Shelf算法（`_pack_shelf_length_desc`）
 
-- 产品项按长边 $el$ 降序排列
-- 其余逻辑同面积降序版本
+采用`width_first`朝向策略，产品项按长边 $el$ 降序排列，其余逻辑同面积降序版本。
+
+```
+1. 朝向决策：_orient_items(items, 'width_first')
+2. 按长边降序排列：sorted(oriented, key=-el)
+3. 其余步骤同_pack_shelf_area_desc的步骤3-6
+```
 
 ### 7.6 随机扰动优化
 
@@ -332,32 +415,56 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 尝试将利用率低的原片上的产品项移到其他原片的剩余空间：
 
 ```
-1. 计算每个原片的利用率
-2. 按利用率升序排列
-3. 对利用率 < 85% 的原片（源原片）：
-   a. 收集其所有产品项
-   b. 遍历其他原片（目标原片）：
-      - 计算目标原片的剩余y空间
-      - 将可放入的产品项追加到目标原片
-   c. 若所有项都被移走：移除源原片，标记improved=True
-4. 若improved：重复步骤1-3
-5. 重新编号原片
+1. 若原片数 ≤ 1，直接返回
+2. 循环（直到无改进）：
+   a. 计算每个原片的利用率 util = used_area / plate_area
+   b. 按利用率升序排列
+   c. 对利用率 < 85% 的原片（源原片 src_board）：
+      i. 收集其所有产品项为 items_to_place
+      ii. 遍历其他原片（目标原片 dst_board）：
+          - 计算 used_y = max(item.y + item.width) （目标原片已用y空间）
+          - remaining_y = W - used_y
+          - 对 items_to_place 中每个项：
+            若 ew ≤ remaining_y 且 el ≤ L：
+              放置到目标原片 (x=0, y=used_y)，更新 used_y 和 remaining_y
+            否则：加入 still_remaining 列表
+          - items_to_place = still_remaining
+      iii. 若 items_to_place 为空（所有项已移走）：
+           移除源原片，标记 improved=True，跳出当前循环
+   d. 重新编号原片
+3. 返回合并后的原片列表
 ```
 
-### 7.8 增强版排样器总流程（`EnhancedGuillotinePacker.pack`）
+### 7.8 基础版排样器总流程（`GuillotineCutPacker.pack`）
 
 ```
 输入：产品项DataFrame, 材质名
 输出：排样结果列表（CuttingBoard）
 
-1. 展开item_num为单独项
+1. 展开item_num为单独项（_expand_items）
+2. 3种容差 × 3种朝向 = 9种组合
+   对每种组合：_orient_items → _build_stacks → _pack_stacks_to_boards
+   保留原片数最少的解
+3. 返回最优解
+```
+
+总计比较 $3 \times 3 = 9$ 种排样方案，选原片数最少的。
+
+### 7.9 增强版排样器总流程（`EnhancedGuillotinePacker.pack`）
+
+```
+输入：产品项DataFrame, 材质名
+输出：排样结果列表（CuttingBoard）
+
+1. 展开item_num为单独项（_expand_items）
 2. 策略1：4种容差 × 3种朝向 = 12种组合
    对每种组合：_orient_items → _build_stacks → _pack_stacks_to_boards
    保留原片数最少的解
-3. 策略2：Shelf面积降序算法
-4. 策略3：Shelf长边降序算法
+3. 策略2：Shelf面积降序算法（_pack_shelf_area_desc）
+4. 策略3：Shelf长边降序算法（_pack_shelf_length_desc）
 5. 策略4：20次随机扰动 × 2种朝向 = 40种组合
-6. 后处理：_consolidate_boards
+   每次随机打乱项序 → _orient_items → _build_stacks(1%/2mm) → _pack_stacks_to_boards
+6. 后处理：_consolidate_boards（合并利用率<85%的稀疏原片）
 7. 返回最优解
 ```
 
