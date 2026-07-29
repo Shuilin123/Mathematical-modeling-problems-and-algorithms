@@ -5,6 +5,7 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 # 高温作业专用服装设计
 
 皮肤外层温度变化曲线
+
 1、温度分布
 
 
