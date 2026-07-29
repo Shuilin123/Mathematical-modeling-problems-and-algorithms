@@ -307,22 +307,21 @@ $$\eta = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times
 - **`hybrid`**：当前实现与`width_first`策略一致（$prefer\_a = (l \geq w)$），保留接口以供后续扩展
 
 **朝向选择算法**：
-- $\text{width\_first}$：优先短边作为y方向（$ew$），有利于栈宽度一致。当 $l \ge w$ 时选择朝向A
-- $\text{length\_first}$：优先长边作为y方向，可能产生更深的栈。当 $l < w$ 时选择朝向A
-- $\text{hybrid}$：当前实现与 $\text{width\_first}$ 策略一致（$\text{prefer}_a = (l \ge w)$），保留接口拓展
-
-朝向选择算法：对每个产品项 $\text{item}(l,w)$：
-1. 计算两种朝向：
-   - 朝向A：$el = l,\; ew = w,\; \text{rotated} = \text{False}$
-   - 朝向B：$el = w,\; ew = l,\; \text{rotated} = \text{True}$
-
-2. 检查可行性：
-$\text{fits}_a = \left(el_a \le L \land ew_a \le W\right),\quad \text{fits}_b = \left(el_b \le L \land ew_b \le W\right)$
-
-3. 根据策略确定优先朝向：
-   - $\text{width\_first}$：$\text{prefer}_a = (l \ge w)$
-   - $\text{length\_first}$：$\text{prefer}_a = (l < w)$
-   - hybrid：$\text{prefer}_a = (l \ge w)$
+> 对每个产品项 $\text{item}(l, w)$：
+> 1. 计算两种朝向：
+>    - 朝向A：$el = l,\; ew = w,\; \text{rotated} = \text{False}$
+>    - 朝向B：$el = w,\; ew = l,\; \text{rotated} = \text{True}$
+> 2. 检查可行性：$\text{fits}\_\text{a} = (el_a \leq L \wedge ew_a \leq W)$，$\text{fits}\_\text{b} = (el_b \leq L \wedge ew_b \leq W)$
+> 3. 根据策略确定优先朝向：
+>    - $\text{width}\_\text{first}$：$\text{prefer}\_\text{a} = (l \geq w)$
+>    - $\text{length}\_\text{first}$：$\text{prefer}\_\text{a} = (l < w)$
+>    - $\text{hybrid}$：$\text{prefer}\_\text{a} = (l \geq w)$
+> 4. 选择朝向（优先使用策略偏好的可行朝向）：
+>    - 若 $\text{prefer}\_\text{a} \wedge \text{fits}\_\text{a}$ → 选朝向A
+>    - 否则若 $\neg \text{prefer}\_\text{a} \wedge \text{fits}\_\text{b}$ → 选朝向B
+>    - 否则若 $\text{fits}\_\text{a}$ → 选朝向A
+>    - 否则若 $\text{fits}\_\text{b}$ → 选朝向B
+>    - 否则 → 选溢出较小的朝向
 
 **关键约束**：$el \leq L$ 且 $ew \leq W$。若优先朝向超出原片范围，自动切换到另一朝向。
 
