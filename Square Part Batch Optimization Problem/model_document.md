@@ -414,7 +414,7 @@ $$\eta = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times
 
 **评分函数设计**：
 
-$$\text{score} = \underbrace{(h_s - w_{\text{stack}}) \times l_{\text{stack}}}_{\text{高度浪费}} + \underbrace{(L - l_{\text{used}} - l_{\text{stack}}) \times \min(w_{\text{stack}}, h_s - w_{\text{stack}})}_{\text{长度浪费预估}} \tag{26}$$
+$$\text{score} = \underbrace{(h_s - w_{\text{stack}}) \times l_{\text{stack}}}_{\text{高度浪费}} + \underbrace{(L - l_{\text{used}} - l_{\text{stack}}) \times \min(w_{\text{stack}}, h_s - w_{\text{stack}})}_{\text{长度浪费预估}} $$
 
 评分越小表示浪费越少，优先选择。新条带有额外惩罚系数0.1，避免过早开新条带。
 
