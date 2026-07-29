@@ -132,24 +132,39 @@ $$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\}$$
 
 $$\min \sum_{k \in K} u_k \tag{1}$$
 
-$$\text{s.t.} \left\{ \begin{aligned}
-& \sum_{k \in K} z_{ik} = n_i, && \forall i \in I && (2)\\
-& l_i' = l_i(1-o_i) + w_i \cdot o_i, && \forall i \in I && (3)\\
-& w_i' = w_i(1-o_i) + l_i \cdot o_i, && \forall i \in I && (4)\\
-& p_{ik}^x + l_i' \leq L + M(1 - z_{ik}), && \forall i \in I, k \in K && (5)\\
-& p_{ik}^y + w_i' \leq W + M(1 - z_{ik}), && \forall i \in I, k \in K && (6)\\
-& p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), && \forall i_1 < i_2, k \in K && (7)\\
-& p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), && \forall i_1 < i_2, k \in K && (8)\\
-& p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), && \forall i_1 < i_2, k \in K && (9)\\
-& p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), && \forall i_1 < i_2, k \in K && (10)\\
-& \alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, && \forall i_1 < i_2, k \in K && (11)\\
-& \sum_{s} h_s \leq W, \quad h_s > 0 && && (12)\\
-& w_{i_1}' = w_{i_2}', && \forall i_1, i_2 \in \text{Stack}_t && (13)\\
-& \sum_{i \in \text{Stack}_t} l_i' \leq L && && (14)\\
-& z_{ik} \leq u_k, && \forall i \in I, k \in K && (15)\\
-& p_{ik}^x \geq 0, \; p_{ik}^y \geq 0, && \forall i \in I, k \in K && (16)\\
-& z_{ik}, u_k, o_i \in \{0, 1\}, \; \alpha_{i_1i_2k}^r \in \{0, 1\} && && (17)
-\end{aligned} \right.$$
+s.t.
+
+$$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2}$$
+
+$$l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3}$$
+
+$$w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4}$$
+
+$$p_{ik}^x + l_i' \leq L + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{5}$$
+
+$$p_{ik}^y + w_i' \leq W + M(1 - z_{ik}), \quad \forall i \in I, k \in K \tag{6}$$
+
+$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), \quad \forall i_1 < i_2, k \in K \tag{7}$$
+
+$$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), \quad \forall i_1 < i_2, k \in K \tag{8}$$
+
+$$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), \quad \forall i_1 < i_2, k \in K \tag{9}$$
+
+$$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), \quad \forall i_1 < i_2, k \in K \tag{10}$$
+
+$$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2, k \in K \tag{11}$$
+
+$$\sum_{s} h_s \leq W, \quad h_s > 0 \tag{12}$$
+
+$$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t \tag{13}$$
+
+$$\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14}$$
+
+$$z_{ik} \leq u_k, \quad \forall i \in I, k \in K \tag{15}$$
+
+$$p_{ik}^x \geq 0, \; p_{ik}^y \geq 0, \quad \forall i \in I, k \in K \tag{16}$$
+
+$$z_{ik}, u_k, o_i \in \{0, 1\}, \; \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}$$
 
 ---
 
@@ -205,15 +220,21 @@ $$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J$$
 
 $$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk} \tag{18}$$
 
-$$\text{s.t.} \left\{ \begin{aligned}
-& \text{约束(2)-(17)（继承子问题1全部约束）} && && \\
-& \sum_{j \in J} x_{ij} = 1, && \forall i \in I && (19)\\
-& x_{i_1j} = x_{i_2j}, && \forall i_1, i_2 \in I_o \cap I_m, \forall j \in J, \forall m \in M && (20)\\
-& \sum_{i \in I} x_{ij} \leq N_{\max}, && \forall j \in J && (21)\\
-& \sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, && \forall j \in J && (22)\\
-& z_{i_1k} + z_{i_2k} \leq 1, && \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K && (23)\\
-& x_{ij} \in \{0, 1\}, && \forall i \in I, j \in J && (24)
-\end{aligned} \right.$$
+s.t.
+
+$$\text{约束(2)-(17)（继承子问题1全部约束）}$$
+
+$$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}$$
+
+$$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o \cap I_m, \forall j \in J, \forall m \in M \tag{20}$$
+
+$$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}$$
+
+$$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}$$
+
+$$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K \tag{23}$$
+
+$$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$$
 
 ---
 
@@ -305,16 +326,16 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 > 1. 计算两种朝向：
 >    - 朝向A：$el = l,\; ew = w,\; \text{rotated} = \text{False}$
 >    - 朝向B：$el = w,\; ew = l,\; \text{rotated} = \text{True}$
-> 2. 检查可行性：$\text{fits\_a} = (el_a \leq L \wedge ew_a \leq W)$，$\text{fits\_b} = (el_b \leq L \wedge ew_b \leq W)$
+> 2. 检查可行性：$\text{fits}\_\text{a} = (el_a \leq L \wedge ew_a \leq W)$，$\text{fits}\_\text{b} = (el_b \leq L \wedge ew_b \leq W)$
 > 3. 根据策略确定优先朝向：
->    - $\text{width\_first}$：$\text{prefer\_a} = (l \geq w)$
->    - $\text{length\_first}$：$\text{prefer\_a} = (l < w)$
->    - $\text{hybrid}$：$\text{prefer\_a} = (l \geq w)$
+>    - $\text{width}\_\text{first}$：$\text{prefer}\_\text{a} = (l \geq w)$
+>    - $\text{length}\_\text{first}$：$\text{prefer}\_\text{a} = (l < w)$
+>    - $\text{hybrid}$：$\text{prefer}\_\text{a} = (l \geq w)$
 > 4. 选择朝向（优先使用策略偏好的可行朝向）：
->    - 若 $\text{prefer\_a} \wedge \text{fits\_a}$ → 选朝向A
->    - 否则若 $\neg\text{prefer\_a} \wedge \text{fits\_b}$ → 选朝向B
->    - 否则若 $\text{fits\_a}$ → 选朝向A
->    - 否则若 $\text{fits\_b}$ → 选朝向B
+>    - 若 $\text{prefer}\_\text{a} \wedge \text{fits}\_\text{a}$ → 选朝向A
+>    - 否则若 $\neg \text{prefer}\_\text{a} \wedge \text{fits}\_\text{b}$ → 选朝向B
+>    - 否则若 $\text{fits}\_\text{a}$ → 选朝向A
+>    - 否则若 $\text{fits}\_\text{b}$ → 选朝向B
 >    - 否则 → 选溢出较小的朝向
 
 **关键约束**：$el \leq L$ 且 $ew \leq W$。若优先朝向超出原片范围，自动切换到另一朝向。
@@ -333,10 +354,10 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 > 1. 初始化聚类列表 $\text{clusters} = []$
 > 2. 对每个产品项 $\text{item}$（按 $ew$ 升序）：
->    a. 计算容差 $\text{tol} = \max(\text{cluster\_w} \times \text{tol\_pct},\; \text{tol\_min})$
->    b. 遍历已有聚类，找到第一个满足 $ew \leq \text{cluster\_w} + \text{tol}$ 的聚类
->    c. 若找到：将 $\text{item}$ 加入该聚类，更新 $\text{cluster\_w} = \max(\text{cluster\_w},\; ew)$
->    d. 若未找到：创建新聚类 $\{\text{items}: [\text{item}],\; \text{cluster\_w}: ew\}$
+>    a. 计算容差 $\text{tol} = \max(\text{cluster}\_\text{w} \times \text{tol}\_\text{pct},\; \text{tol}\_\text{min})$
+>    b. 遍历已有聚类，找到第一个满足 $ew \leq \text{cluster}\_\text{w} + \text{tol}$ 的聚类
+>    c. 若找到：将 $\text{item}$ 加入该聚类，更新 $\text{cluster}\_\text{w} = \max(\text{cluster}\_\text{w},\; ew)$
+>    d. 若未找到：创建新聚类 $\{\text{items}: [\text{item}],\; \text{cluster}\_\text{w}: ew\}$
 > 3. 对每个聚类内的项按 $el$ 降序排列
 > 4. 对每个聚类用BFD策略装栈
 
@@ -364,12 +385,12 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 对每个宽度聚类组，使用**Best Fit Decreasing**策略将产品项装入栈：
 
 > 1. 将聚类内项按 $el$ 降序排列
-> 2. 维护活跃栈列表 $\text{active\_stacks} = [(\text{remaining\_length},\; [\text{items}])]$
+> 2. 维护活跃栈列表 $\text{active}\_\text{stacks} = [(\text{remaining}\_\text{length},\; [\text{items}])]$
 > 3. 对每个项 $\text{item}$：
->    a. 在所有 $\text{remaining\_length} \geq \text{item}.el$ 的栈中，找剩余长度最小的（最佳匹配）
->    b. 若找到：将 $\text{item}$ 加入该栈，更新 $\text{remaining\_length}$
->    c. 若未找到：创建新栈，$\text{remaining\_length} = L - \text{item}.el$
-> 4. 每个栈的宽度 $= \text{cluster\_w}$（聚类宽度，而非项的最大宽度）
+>    a. 在所有 $\text{remaining}\_\text{length} \geq \text{item}.el$ 的栈中，找剩余长度最小的（最佳匹配）
+>    b. 若找到：将 $\text{item}$ 加入该栈，更新 $\text{remaining}\_\text{length}$
+>    c. 若未找到：创建新栈，$\text{remaining}\_\text{length} = L - \text{item}.el$
+> 4. 每个栈的宽度 $= \text{cluster}\_\text{w}$（聚类宽度，而非项的最大宽度）
 
 **输出**：栈列表 `[{items, stack_w, stack_l}]`，其中 `stack_w` 为y方向宽度，`stack_l` 为x方向总长度。
 
@@ -391,24 +412,24 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 对排好序的栈列表，逐个放入原片，每次选择**全局最优位置**：
 
-> 1. 初始化原片列表 $\text{boards\_data} = []$
+> 1. 初始化原片列表 $\text{boards}\_\text{data} = []$
 > 2. 对每个栈 $\text{sinfo}$（按排序顺序）：
->    a. $\text{best\_score} = \infty$
+>    a. $\text{best}\_\text{score} = \infty$
 >    b. 遍历所有已有原片 $\text{bdata}$：
 >       i. 遍历该原片的所有已有条带 $\text{stripe}$：
 >          - 若 $w_{\text{stack}} \leq h_s$ 且 $l_{\text{used}} + l_{\text{stack}} \leq L$：
 >            $\text{score} = (h_s - w_{\text{stack}}) \times l_{\text{stack}} + (L - l_{\text{used}} - l_{\text{stack}}) \times \min(w_{\text{stack}},\; h_s - w_{\text{stack}})$
->            若 $\text{score} < \text{best\_score}$：更新最佳位置
+>            若 $\text{score} < \text{best}\_\text{score}$：更新最佳位置
 >       ii. 尝试在该原片创建新条带：
 >          - 若 $y_{\text{used}} + w_{\text{stack}} \leq W$：
 >            $\text{score} = (W - y_{\text{used}} - w_{\text{stack}}) \times L \times 0.1$（新条带惩罚系数）
->            若 $\text{score} < \text{best\_score}$：更新最佳位置
+>            若 $\text{score} < \text{best}\_\text{score}$：更新最佳位置
 >    c. 若找到最佳位置：将栈放入对应原片的对应条带
 >    d. 若未找到：创建新原片，新条带
 
 **评分函数设计**：
 
-$$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}} \tag{26}$$
+$$\text{score} = \underbrace{(h_s - w_{\text{stack}}) \times l_{\text{stack}}}_{\text{高度浪费}} + \underbrace{(L - l_{\text{used}} - l_{\text{stack}}) \times \min(w_{\text{stack}}, h_s - w_{\text{stack}})}_{\text{长度浪费预估}} \tag{26}$$
 
 评分越小表示浪费越少，优先选择。新条带有额外惩罚系数0.1，避免过早开新条带。
 
@@ -420,16 +441,16 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 采用`width_first`朝向策略，产品项按面积 $el \times ew$ 降序排列。
 
-> 1. 朝向决策：$\text{\_orient\_items}(\text{items},\; \text{`width\_first`})$
+> 1. 朝向决策：$\text{\_orient}\_\text{items}(\text{items},\; \text{width}\_\text{first})$
 > 2. 按面积降序排列：$\text{sorted}(\text{oriented},\; \text{key}=-(el \times ew))$
-> 3. 初始化：$\text{boards}=[],\; \text{shelves}=[],\; \text{current\_y}=0$
+> 3. 初始化：$\text{boards}=[],\; \text{shelves}=[],\; \text{current}\_\text{y}=0$
 > 4. 对每个产品项 $\text{item}$（按面积降序）：
 >    a. 在已有 $\text{shelf}$ 中找最佳匹配：
->       遍历所有 $\text{shelf}$，找满足 $ew \leq \text{shelf.height}$ 且 $\text{used\_l} + el \leq L$ 的 $\text{shelf}$
+>       遍历所有 $\text{shelf}$，找满足 $ew \leq \text{shelf.height}$ 且 $\text{used}\_\text{l} + el \leq L$ 的 $\text{shelf}$
 >       选择高度浪费 $(\text{shelf.height} - ew)$ 最小的 $\text{shelf}$
->    b. 若找到最佳 $\text{shelf}$：将 $\text{item}$ 放入该 $\text{shelf}$，更新 $\text{used\_l}$
+>    b. 若找到最佳 $\text{shelf}$：将 $\text{item}$ 放入该 $\text{shelf}$，更新 $\text{used}\_\text{l}$
 >    c. 若未找到：
->       i. 若 $\text{current\_y} + ew \leq W$：创建新 $\text{shelf}$，$\text{current\_y} \mathrel{+}= ew$
+>       i. 若 $\text{current}\_\text{y} + ew \leq W$：创建新 $\text{shelf}$，$\text{current}\_\text{y} += ew$
 >       ii. 否则：将当前 $\text{shelves}$ 封装为原片，创建新原片和新 $\text{shelf}$
 > 5. 将剩余 $\text{shelves}$ 封装为原片
 > 6. 返回 $\text{boards}$
@@ -438,9 +459,9 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 采用`width_first`朝向策略，产品项按长边 $el$ 降序排列，其余逻辑同面积降序版本。
 
-> 1. 朝向决策：$\text{\_orient\_items}(\text{items},\; \text{`width\_first`})$
+> 1. 朝向决策：$\text{\_orient}\_\text{items}(\text{items},\; \text{width}\_\text{first})$
 > 2. 按长边降序排列：$\text{sorted}(\text{oriented},\; \text{key}=-el)$
-> 3. 其余步骤同 $\text{\_pack\_shelf\_area\_desc}$ 的步骤3-6
+> 3. 其余步骤同 $\text{\_pack}\_\text{shelf}\_\text{area}\_\text{desc}$ 的步骤3-6
 
 ### 7.6 随机扰动优化
 
@@ -449,7 +470,7 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 > 1. 设定随机种子 $\text{seed} = 42$（可复现）
 > 2. 重复20次：
 >    a. 随机打乱产品项顺序
->    b. 对每种朝向策略（$\text{width\_first}$, $\text{length\_first}$）：
+>    b. 对每种朝向策略（$\text{width}\_\text{first}$, $\text{length}\_\text{first}$）：
 >       - 朝向决策 → 宽度聚类$(1\%/2\text{mm})$ → 栈构建 → 装原片
 >    c. 若原片数更少则更新最优解
 
@@ -459,19 +480,19 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 > 1. 若原片数 $\leq 1$，直接返回
 > 2. 循环（直到无改进）：
->    a. 计算每个原片的利用率 $\text{util} = \text{used\_area} / \text{plate\_area}$
+>    a. 计算每个原片的利用率 $\text{util} = \text{used}\_\text{area} / \text{plate}\_\text{area}$
 >    b. 按利用率升序排列
->    c. 对利用率 $< 85\%$ 的原片（源原片 $\text{src\_board}$）：
->       i. 收集其所有产品项为 $\text{items\_to\_place}$
->       ii. 遍历其他原片（目标原片 $\text{dst\_board}$）：
+>    c. 对利用率 $< 85\%$ 的原片（源原片 $\text{src}\_\text{board}$）：
+>       i. 收集其所有产品项为 $\text{items}\_\text{to}\_\text{place}$
+>       ii. 遍历其他原片（目标原片 $\text{dst}\_\text{board}$）：
 >           - 计算 $y_{\text{used}} = \max(\text{item}.y + \text{item}.\text{width})$（目标原片已用 $y$ 空间）
->           - $\text{remaining\_y} = W - y_{\text{used}}$
->           - 对 $\text{items\_to\_place}$ 中每个项：
->             若 $ew \leq \text{remaining\_y}$ 且 $el \leq L$：
->               放置到目标原片 $(x=0,\; y=y_{\text{used}})$，更新 $y_{\text{used}}$ 和 $\text{remaining\_y}$
->             否则：加入 $\text{still\_remaining}$ 列表
->           - $\text{items\_to\_place} = \text{still\_remaining}$
->       iii. 若 $\text{items\_to\_place}$ 为空（所有项已移走）：
+>           - $\text{remaining}\_\text{y} = W - y_{\text{used}}$
+>           - 对 $\text{items}\_\text{to}\_\text{place}$ 中每个项：
+>             若 $ew \leq \text{remaining}\_\text{y}$ 且 $el \leq L$：
+>               放置到目标原片 $(x=0,\; y=y_{\text{used}})$，更新 $y_{\text{used}}$ 和 $\text{remaining}\_\text{y}$
+>             否则：加入 $\text{still}\_\text{remaining}$ 列表
+>           - $\text{items}\_\text{to}\_\text{place} = \text{still}\_\text{remaining}$
+>       iii. 若 $\text{items}\_\text{to}\_\text{place}$ 为空（所有项已移走）：
 >            移除源原片，标记 $\text{improved}=\text{True}$，跳出当前循环
 >    d. 重新编号原片
 > 3. 返回合并后的原片列表
@@ -481,9 +502,9 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 > **输入**：产品项 $\text{DataFrame}$, 材质名
 > **输出**：排样结果列表（$\text{CuttingBoard}$）
 >
-> 1. 展开 $\text{item\_num}$ 为单独项（$\text{\_expand\_items}$）
+> 1. 展开 $\text{item}\_\text{num}$ 为单独项（$\text{\_expand}\_\text{items}$）
 > 2. 3种容差 $\times$ 3种朝向 $= 9$ 种组合
->    对每种组合：$\text{\_orient\_items} \to \text{\_build\_stacks} \to \text{\_pack\_stacks\_to\_boards}$
+>    对每种组合：$\text{\_orient}\_\text{items} \to \text{\_build}\_\text{stacks} \to \text{\_pack}\_\text{stacks}\_\text{to}\_\text{boards}$
 >    保留原片数最少的解
 > 3. 返回最优解
 
@@ -494,15 +515,15 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 > **输入**：产品项 $\text{DataFrame}$, 材质名
 > **输出**：排样结果列表（$\text{CuttingBoard}$）
 >
-> 1. 展开 $\text{item\_num}$ 为单独项（$\text{\_expand\_items}$）
+> 1. 展开 $\text{item}\_\text{num}$ 为单独项（$\text{\_expand}\_\text{items}$）
 > 2. 策略1：4种容差 $\times$ 3种朝向 $= 12$ 种组合
->    对每种组合：$\text{\_orient\_items} \to \text{\_build\_stacks} \to \text{\_pack\_stacks\_to\_boards}$
+>    对每种组合：$\text{\_orient}\_\text{items} \to \text{\_build}\_\text{stacks} \to \text{\_pack}\_\text{stacks}\_\text{to}\_\text{boards}$
 >    保留原片数最少的解
-> 3. 策略2：$\text{Shelf}$ 面积降序算法（$\text{\_pack\_shelf\_area\_desc}$）
-> 4. 策略3：$\text{Shelf}$ 长边降序算法（$\text{\_pack\_shelf\_length\_desc}$）
+> 3. 策略2：$\text{Shelf}$ 面积降序算法（$\text{\_pack}\_\text{shelf}\_\text{area}\_\text{desc}$）
+> 4. 策略3：$\text{Shelf}$ 长边降序算法（$\text{\_pack}\_\text{shelf}\_\text{length}\_\text{desc}$）
 > 5. 策略4：20次随机扰动 $\times$ 2种朝向 $= 40$ 种组合
->    每次随机打乱项序 $\to$ $\text{\_orient\_items} \to$ $\text{\_build\_stacks}(1\%/2\text{mm}) \to$ $\text{\_pack\_stacks\_to\_boards}$
-> 6. 后处理：$\text{\_consolidate\_boards}$（合并利用率 $< 85\%$ 的稀疏原片）
+>    每次随机打乱项序 $\to$ $\text{\_orient}\_\text{items} \to$ $\text{\_build}\_\text{stacks}(1\%/2\text{mm}) \to$ $\text{\_pack}\_\text{stacks}\_\text{to}\_\text{boards}$
+> 6. 后处理：$\text{\_consolidate}\_\text{boards}$（合并利用率 $< 85\%$ 的稀疏原片）
 > 7. 返回最优解
 
 总计比较 $12 + 2 + 40 = 54$ 种排样方案，选原片数最少的。
@@ -529,7 +550,7 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 >    a. 将该材质的订单按总面积降序排列
 >    b. 初始化当前批次：$\text{count}=0,\; \text{area}=0$
 >    c. 对每个订单（面积降序）：
->       - 若 $\text{count} + \text{order\_count} \leq 1000$ 且 $\text{area} + \text{order\_area} \leq 250\text{m}^2$（order_count和order_area为该订单跨所有材质的总量，非仅当前材质部分）：
+>       - 若 $\text{count} + \text{order}\_\text{count} \leq 1000$ 且 $\text{area} + \text{order}\_\text{area} \leq 250\text{m}^2$（order_count和order_area为该订单跨所有材质的总量，非仅当前材质部分）：
 >         加入当前批次
 >       - 否则：保存当前批次，创建新批次
 > 4. 返回所有批次
@@ -538,7 +559,7 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 > 对每个数据集文件：
 > 1. 读取 $\text{CSV}$，加载产品项
-> 2. 调用 $\text{OrderBatcher.batch\_orders}$ 进行组批
+> 2. 调用 $\text{OrderBatcher.batch}\_\text{orders}$ 进行组批
 > 3. 对每个批次：
 >    a. 按材质分组
 >    b. 对每种材质调用 $\text{EnhancedGuillotinePacker.pack}$ 排样
