@@ -206,10 +206,10 @@ $x_{ij}$ 为0-1决策变量，表示产品项 $i$ 是否分配到批次 $j$。
 $$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J$$
 
 ### 4.2 数学规划标准形式
-
 $$
-\tag{18} \min \displaystyle\sum_{j \in J} \sum_{k \in K_j} u_{jk}
-\qquad
+\min \displaystyle\sum_{j \in J} \sum_{k \in K_j} u_{jk}  
+$$
+$$
 \text{s.t.} \quad
 \begin{cases}
 \text{约束(2)-(17)（继承子问题1全部约束）} \\
