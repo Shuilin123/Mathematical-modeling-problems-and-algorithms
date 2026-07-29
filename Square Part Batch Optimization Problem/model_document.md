@@ -226,7 +226,7 @@ $$
 
 ## 五、板材利用率
 
-$$\eta = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} \tag{25}$$
+$$\eta = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} $$
 
 ---
 
