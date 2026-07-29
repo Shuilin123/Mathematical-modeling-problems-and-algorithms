@@ -1,6 +1,6 @@
-# Mathematical-modeling-problems-and-algorithms
+# 数学建模与算法
 
-Algorithms and papers for some mathematical modeling problems \[continuously update]
+这一些数学建模问题部分解决方案 [持续更新]
 
 ## 一、高温作业专用服装设计
 
