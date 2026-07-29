@@ -47,9 +47,17 @@ Algorithms and papers for some mathematical modeling problems \[continuously upd
 
 ## 三、方形件组批优化
 
-1、不区分材料的下料切割样
+问题1 不区分材料的下料切割样例
 
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(1).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(2).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(3).png)
 ![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(4).png)
+
+问题2 区分材料的下料切割样例
+
+![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(1).png)
+![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(2).png)
+![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(3).png)
+![problem3\_1](https://github.com/Shuilin123/Mathematical-modeling-problems-and-algorithms/blob/master/Square%20Part%20Batch%20Optimization%20Problem/output_sub1/output_images/A_Board%20(4).png)
+
