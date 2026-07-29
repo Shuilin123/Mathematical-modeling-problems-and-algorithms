@@ -52,117 +52,135 @@
 
 ## 三、子问题1：排样优化模型
 
-### 3.1 目标函数
+### 3.1 数学规划标准形式
 
-$$\min \sum_{k \in K} u_k$$
+$$\min \sum_{k \in K} u_k \tag{1}$$
 
-即最小化使用的原片总数。
+$$\text{s.t.}$$
 
-### 3.2 约束条件
+$$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I \tag{2}$$
 
-#### （1）需求满足约束
+$$l_i' = l_i(1-o_i) + w_i \cdot o_i, \quad \forall i \in I \tag{3}$$
 
-$$\sum_{k \in K} z_{ik} = n_i, \quad \forall i \in I$$
+$$w_i' = w_i(1-o_i) + l_i \cdot o_i, \quad \forall i \in I \tag{4}$$
 
-每个产品项必须被完整排布。
+$$p_{ik}^x + l_i' \leq L \cdot u_k, \quad \forall i \in I, k \in K \tag{5}$$
 
-#### （2）原片边界约束
+$$p_{ik}^y + w_i' \leq W \cdot u_k, \quad \forall i \in I, k \in K \tag{6}$$
 
-$$p_{ik}^x + l_i' \leq L \cdot u_k, \quad \forall i \in I, k \in K$$
+$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1), \quad \forall i_1 < i_2, k \in K \tag{7}$$
 
-$$p_{ik}^y + w_i' \leq W \cdot u_k, \quad \forall i \in K, k \in K$$
+$$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2), \quad \forall i_1 < i_2, k \in K \tag{8}$$
 
-其中 $l_i' = l_i(1-o_i) + w_i \cdot o_i$，$w_i' = w_i(1-o_i) + l_i \cdot o_i$ 为考虑旋转后的有效长宽。
+$$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3), \quad \forall i_1 < i_2, k \in K \tag{9}$$
 
-#### （3）不重叠约束
+$$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4), \quad \forall i_1 < i_2, k \in K \tag{10}$$
 
-对于同一原片 $k$ 上的任意两个产品项 $i_1, i_2$：
+$$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1, \quad \forall i_1 < i_2, k \in K \tag{11}$$
+
+$$\sum_{s} h_s \leq W, \quad h_s > 0 \tag{12}$$
+
+$$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t \tag{13}$$
+
+$$\sum_{i \in \text{Stack}_t} l_i' \leq L \tag{14}$$
+
+$$z_{ik} \leq u_k, \quad \forall i \in I, k \in K \tag{15}$$
+
+$$p_{ik}^x \geq 0, \quad p_{ik}^y \geq 0, \quad \forall i \in I, k \in K \tag{16}$$
+
+$$z_{ik}, u_k, o_i \in \{0, 1\}, \quad \alpha_{i_1i_2k}^r \in \{0, 1\} \tag{17}$$
+
+### 3.2 约束条件说明
+
+#### （1）需求满足约束（式2）
+
+每个产品项必须被完整排布到原片上，需求量 $n_i$ 必须全部满足。
+
+#### （2）旋转定义（式3-4）
+
+$l_i'$ 和 $w_i'$ 为考虑旋转后的有效长宽。当 $o_i = 0$ 时不旋转，$o_i = 1$ 时旋转90°（长宽互换）。
+
+#### （3）原片边界约束（式5-6）
+
+产品项不能超出原片边界。仅当原片 $k$ 被使用（$u_k = 1$）时，产品项才能排布其上；若 $u_k = 0$，则式(5)(6)强制 $p_{ik}^x + l_i' \leq 0$ 且 $p_{ik}^y + w_i' \leq 0$，即产品项不会被分配到未使用的原片。
+
+#### （4）不重叠约束（式7-11）
+
+对于同一原片 $k$ 上的任意两个产品项 $i_1, i_2$，至少满足以下四个方向之一的不重叠条件：
 
 $$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x \;\lor\; p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x \;\lor\; p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y \;\lor\; p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y$$
 
-使用大M法线性化：
+使用大M法将析取约束线性化为式(7)-(11)，其中 $M$ 为足够大的常数，$\alpha_{i_1i_2k}^r \in \{0,1\}$ 为辅助0-1变量，式(11)确保至少一个方向的不重叠条件被激活。
 
-$$p_{i_1k}^x + l_{i_1}' \leq p_{i_2k}^x + M(1-\alpha_{i_1i_2k}^1)$$
-
-$$p_{i_2k}^x + l_{i_2}' \leq p_{i_1k}^x + M(1-\alpha_{i_1i_2k}^2)$$
-
-$$p_{i_1k}^y + w_{i_1}' \leq p_{i_2k}^y + M(1-\alpha_{i_1i_2k}^3)$$
-
-$$p_{i_2k}^y + w_{i_2}' \leq p_{i_1k}^y + M(1-\alpha_{i_1i_2k}^4)$$
-
-$$\alpha_{i_1i_2k}^1 + \alpha_{i_1i_2k}^2 + \alpha_{i_1i_2k}^3 + \alpha_{i_1i_2k}^4 \geq 1$$
-
-#### （4）齐头切（Guillotine Cut）约束
+#### （5）齐头切（Guillotine Cut）约束（式12-14）
 
 排样方案必须满足3阶段齐头切约束：
 
-- **第1阶段**：原片沿水平方向切割为若干条带（Stripe），每条带宽度为 $h_s$（$s$ 为条带索引）
-- **第2阶段**：每条带沿垂直方向切割为若干栈（Stack），同一栈内产品项宽度相同
-- **第3阶段**：每栈沿水平方向切割为产品项（Item），同一栈内产品项长度可以不同但宽度必须相同
+- **第1阶段**：原片沿水平方向切割为若干条带（Stripe），每条带宽度为 $h_s$（$s$ 为条带索引），式(12)保证条带总宽度不超过原片宽度
+- **第2阶段**：每条带沿垂直方向切割为若干栈（Stack），式(13)保证同一栈内产品项y方向宽度相同
+- **第3阶段**：每栈沿水平方向切割为产品项（Item），式(14)保证同一栈内产品项长度之和不超过原片长度
 
-形式化表示：
+#### （6）变量关联与域约束（式15-17）
 
-$$\sum_{s} h_s \leq W, \quad h_s > 0$$
-
-同一栈 $t$ 内的产品项：
-
-$$w_{i_1}' = w_{i_2}', \quad \forall i_1, i_2 \in \text{Stack}_t$$
-
-同一栈内产品项长度之和不超过原片长度：
-
-$$\sum_{i \in \text{Stack}_t} l_i' \leq L$$
-
-#### （5）变量关联约束
-
-$$z_{ik} \leq u_k, \quad \forall i \in I, k \in K$$
-
-$$p_{ik}^x \geq 0, \quad p_{ik}^y \geq 0, \quad \forall i \in I, k \in K$$
+式(15)确保产品项只能排布到已使用的原片上；式(16)为坐标非负约束；式(17)定义0-1变量域。
 
 ---
 
 ## 四、子问题2：订单组批+排样优化模型
 
-### 4.1 目标函数
+### 4.1 数学规划标准形式
 
-$$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk}$$
+$$\min \sum_{j \in J} \sum_{k \in K_j} u_{jk} \tag{18}$$
 
-即最小化所有批次使用的原片总数。
+$$\text{s.t.}$$
 
-### 4.2 约束条件
+式(2)-(17)（继承子问题1全部约束），以及：
 
-在子问题1全部约束的基础上，增加：
+$$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I \tag{19}$$
 
-#### （1）订单完整分配约束
+$$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o, \forall j \in J \tag{20}$$
 
-$$\sum_{j \in J} x_{ij} = 1, \quad \forall i \in I$$
+$$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J \tag{21}$$
 
-每个产品项当且仅当分配到一个批次。
+$$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J \tag{22}$$
 
-#### （2）订单完整性约束
+$$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K \tag{23}$$
 
-若订单 $o$ 中任一产品项分配到批次 $j$，则该订单所有产品项必须分配到同一批次：
+$$x_{ij} \in \{0, 1\}, \quad \forall i \in I, j \in J \tag{24}$$
 
-$$x_{i_1j} = x_{i_2j}, \quad \forall i_1, i_2 \in I_o, \forall j \in J$$
+### 4.2 约束条件说明
 
-#### （3）批次产品项数约束
+在子问题1全部约束（式2-17）的基础上，增加以下约束：
 
-$$\sum_{i \in I} x_{ij} \leq N_{\max}, \quad \forall j \in J$$
+#### （1）订单完整分配约束（式19）
 
-#### （4）批次面积约束
+每个产品项当且仅当分配到一个批次，确保所有产品项都被处理且不重复分配。
 
-$$\sum_{i \in I} a_i \cdot x_{ij} \leq A_{\max}, \quad \forall j \in J$$
+#### （2）订单完整性约束（式20）
 
-#### （5）材质共用约束
+若订单 $o$ 中任一产品项分配到批次 $j$，则该订单所有产品项必须分配到同一批次，确保订单不被拆分。
 
-同一原片上只能排布相同材质的产品项：
+#### （3）批次产品项数约束（式21）
 
-$$z_{i_1k} + z_{i_2k} \leq 1, \quad \text{if } m_{i_1} \neq m_{i_2}, \forall i_1, i_2 \in I, k \in K$$
+每个批次的产品项总数不超过 $N_{\max} = 1000$。
+
+#### （4）批次面积约束（式22）
+
+每个批次的产品项面积总和不超过 $A_{\max} = 250 \text{ m}^2$。
+
+#### （5）材质共用约束（式23）
+
+同一原片上只能排布相同材质的产品项。若两个产品项材质不同，则不能排布在同一原片上。
+
+#### （6）变量域约束（式24）
+
+$x_{ij}$ 为0-1决策变量，表示产品项 $i$ 是否分配到批次 $j$。
 
 ---
 
 ## 五、板材利用率
 
-$$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k}$$
+$$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in K} L \times W \times u_k} \tag{25}$$
 
 ---
 
@@ -244,23 +262,21 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 **朝向选择算法**：
 
-```
-对每个产品项item(l, w)：
-1. 计算两种朝向：
-   朝向A: el=l, ew=w, rotated=False
-   朝向B: el=w, ew=l, rotated=True
-2. 检查可行性：fits_a = (el_a≤L 且 ew_a≤W), fits_b = (el_b≤L 且 ew_b≤W)
-3. 根据策略确定优先朝向：
-   width_first: prefer_a = (l ≥ w)
-   length_first: prefer_a = (l < w)
-   hybrid: prefer_a = (l ≥ w)
-4. 选择朝向（优先使用策略偏好的可行朝向）：
-   若 prefer_a 且 fits_a → 选朝向A
-   否则若 (¬prefer_a) 且 fits_b → 选朝向B
-   否则若 fits_a → 选朝向A
-   否则若 fits_b → 选朝向B
-   否则 → 选溢出较小的朝向
-```
+> 对每个产品项 $\text{item}(l, w)$：
+> 1. 计算两种朝向：
+>    - 朝向A：$el = l,\; ew = w,\; \text{rotated} = \text{False}$
+>    - 朝向B：$el = w,\; ew = l,\; \text{rotated} = \text{True}$
+> 2. 检查可行性：$\text{fits\_a} = (el_a \leq L \wedge ew_a \leq W)$，$\text{fits\_b} = (el_b \leq L \wedge ew_b \leq W)$
+> 3. 根据策略确定优先朝向：
+>    - $\text{width\_first}$：$\text{prefer\_a} = (l \geq w)$
+>    - $\text{length\_first}$：$\text{prefer\_a} = (l < w)$
+>    - $\text{hybrid}$：$\text{prefer\_a} = (l \geq w)$
+> 4. 选择朝向（优先使用策略偏好的可行朝向）：
+>    - 若 $\text{prefer\_a} \wedge \text{fits\_a}$ → 选朝向A
+>    - 否则若 $\neg\text{prefer\_a} \wedge \text{fits\_b}$ → 选朝向B
+>    - 否则若 $\text{fits\_a}$ → 选朝向A
+>    - 否则若 $\text{fits\_b}$ → 选朝向B
+>    - 否则 → 选溢出较小的朝向
 
 **关键约束**：$el \leq L$ 且 $ew \leq W$。若优先朝向超出原片范围，自动切换到另一朝向。
 
@@ -276,16 +292,14 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 **算法步骤**：
 
-```
-1. 初始化聚类列表 clusters = []
-2. 对每个产品项 item（按ew升序）：
-   a. 计算容差 tol = max(cluster_w × tol_pct, tol_min)
-   b. 遍历已有聚类，找到第一个满足 ew ≤ cluster_w + tol 的聚类
-   c. 若找到：将item加入该聚类，更新cluster_w = max(cluster_w, ew)
-   d. 若未找到：创建新聚类 {items: [item], cluster_w: ew}
-3. 对每个聚类内的项按el降序排列
-4. 对每个聚类用BFD策略装栈
-```
+> 1. 初始化聚类列表 $\text{clusters} = []$
+> 2. 对每个产品项 $\text{item}$（按 $ew$ 升序）：
+>    a. 计算容差 $\text{tol} = \max(\text{cluster\_w} \times \text{tol\_pct},\; \text{tol\_min})$
+>    b. 遍历已有聚类，找到第一个满足 $ew \leq \text{cluster\_w} + \text{tol}$ 的聚类
+>    c. 若找到：将 $\text{item}$ 加入该聚类，更新 $\text{cluster\_w} = \max(\text{cluster\_w},\; ew)$
+>    d. 若未找到：创建新聚类 $\{\text{items}: [\text{item}],\; \text{cluster\_w}: ew\}$
+> 3. 对每个聚类内的项按 $el$ 降序排列
+> 4. 对每个聚类用BFD策略装栈
 
 **容差参数**：
 
@@ -310,15 +324,13 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 对每个宽度聚类组，使用**Best Fit Decreasing**策略将产品项装入栈：
 
-```
-1. 将聚类内项按el降序排列
-2. 维护活跃栈列表 active_stacks = [(remaining_length, [items])]
-3. 对每个项item：
-   a. 在所有remaining_length ≥ item.el的栈中，找剩余长度最小的（最佳匹配）
-   b. 若找到：将item加入该栈，更新remaining_length
-   c. 若未找到：创建新栈，remaining_length = L - item.el
-4. 每个栈的宽度 = 聚类宽度cluster_w（而非项的最大宽度）
-```
+> 1. 将聚类内项按 $el$ 降序排列
+> 2. 维护活跃栈列表 $\text{active\_stacks} = [(\text{remaining\_length},\; [\text{items}])]$
+> 3. 对每个项 $\text{item}$：
+>    a. 在所有 $\text{remaining\_length} \geq \text{item}.el$ 的栈中，找剩余长度最小的（最佳匹配）
+>    b. 若找到：将 $\text{item}$ 加入该栈，更新 $\text{remaining\_length}$
+>    c. 若未找到：创建新栈，$\text{remaining\_length} = L - \text{item}.el$
+> 4. 每个栈的宽度 $= \text{cluster\_w}$（聚类宽度，而非项的最大宽度）
 
 **输出**：栈列表 `[{items, stack_w, stack_l}]`，其中 `stack_w` 为y方向宽度，`stack_l` 为x方向总长度。
 
@@ -340,26 +352,24 @@ $$\text{利用率} = \frac{\sum_{i \in I} l_i \times w_i \times n_i}{\sum_{k \in
 
 对排好序的栈列表，逐个放入原片，每次选择**全局最优位置**：
 
-```
-1. 初始化原片列表 boards_data = []
-2. 对每个栈 sinfo（按排序顺序）：
-   a. best_score = ∞
-   b. 遍历所有已有原片 bdata：
-      i. 遍历该原片的所有已有条带 stripe：
-         - 若 stack_w ≤ stripe_h 且 used_l + stack_l ≤ L：
-           score = (stripe_h - stack_w) × stack_l + (L - used_l - stack_l) × min(stack_w, stripe_h - stack_w)
-           若 score < best_score：更新最佳位置
-      ii. 尝试在该原片创建新条带：
-         - 若 used_y + stack_w ≤ W：
-           score = (W - used_y - stack_w) × L × 0.1  （新条带惩罚系数）
-           若 score < best_score：更新最佳位置
-   c. 若找到最佳位置：将栈放入对应原片的对应条带
-   d. 若未找到：创建新原片，新条带
-```
+> 1. 初始化原片列表 $\text{boards\_data} = []$
+> 2. 对每个栈 $\text{sinfo}$（按排序顺序）：
+>    a. $\text{best\_score} = \infty$
+>    b. 遍历所有已有原片 $\text{bdata}$：
+>       i. 遍历该原片的所有已有条带 $\text{stripe}$：
+>          - 若 $w_{\text{stack}} \leq h_s$ 且 $l_{\text{used}} + l_{\text{stack}} \leq L$：
+>            $\text{score} = (h_s - w_{\text{stack}}) \times l_{\text{stack}} + (L - l_{\text{used}} - l_{\text{stack}}) \times \min(w_{\text{stack}},\; h_s - w_{\text{stack}})$
+>            若 $\text{score} < \text{best\_score}$：更新最佳位置
+>       ii. 尝试在该原片创建新条带：
+>          - 若 $y_{\text{used}} + w_{\text{stack}} \leq W$：
+>            $\text{score} = (W - y_{\text{used}} - w_{\text{stack}}) \times L \times 0.1$（新条带惩罚系数）
+>            若 $\text{score} < \text{best\_score}$：更新最佳位置
+>    c. 若找到最佳位置：将栈放入对应原片的对应条带
+>    d. 若未找到：创建新原片，新条带
 
 **评分函数设计**：
 
-$$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}}$$
+$$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度浪费}} + \underbrace{(L - l_{used} - l_{stack}) \times \min(w_{stack}, h_s - w_{stack})}_{\text{长度浪费预估}} \tag{26}$$
 
 评分越小表示浪费越少，优先选择。新条带有额外惩罚系数0.1，避免过早开新条带。
 
@@ -371,102 +381,90 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 采用`width_first`朝向策略，产品项按面积 $el \times ew$ 降序排列。
 
-```
-1. 朝向决策：_orient_items(items, 'width_first')
-2. 按面积降序排列：sorted(oriented, key=-(el × ew))
-3. 初始化：boards=[], shelves=[], current_y=0
-4. 对每个产品项item（按面积降序）：
-   a. 在已有shelf中找最佳匹配：
-      遍历所有shelf，找满足 ew ≤ shelf.height 且 used_l + el ≤ L 的shelf
-      选择高度浪费 (shelf.height - ew) 最小的shelf
-   b. 若找到最佳shelf：将item放入该shelf，更新used_l
-   c. 若未找到：
-      i.  若 current_y + ew ≤ W：创建新shelf，current_y += ew
-      ii. 否则：将当前shelves封装为原片，创建新原片和新shelf
-5. 将剩余shelves封装为原片
-6. 返回boards
-```
+> 1. 朝向决策：$\text{\_orient\_items}(\text{items},\; \text{`width\_first`})$
+> 2. 按面积降序排列：$\text{sorted}(\text{oriented},\; \text{key}=-(el \times ew))$
+> 3. 初始化：$\text{boards}=[],\; \text{shelves}=[],\; \text{current\_y}=0$
+> 4. 对每个产品项 $\text{item}$（按面积降序）：
+>    a. 在已有 $\text{shelf}$ 中找最佳匹配：
+>       遍历所有 $\text{shelf}$，找满足 $ew \leq \text{shelf.height}$ 且 $\text{used\_l} + el \leq L$ 的 $\text{shelf}$
+>       选择高度浪费 $(\text{shelf.height} - ew)$ 最小的 $\text{shelf}$
+>    b. 若找到最佳 $\text{shelf}$：将 $\text{item}$ 放入该 $\text{shelf}$，更新 $\text{used\_l}$
+>    c. 若未找到：
+>       i. 若 $\text{current\_y} + ew \leq W$：创建新 $\text{shelf}$，$\text{current\_y} \mathrel{+}= ew$
+>       ii. 否则：将当前 $\text{shelves}$ 封装为原片，创建新原片和新 $\text{shelf}$
+> 5. 将剩余 $\text{shelves}$ 封装为原片
+> 6. 返回 $\text{boards}$
 
 #### 7.5.2 按长边降序Shelf算法（`_pack_shelf_length_desc`）
 
 采用`width_first`朝向策略，产品项按长边 $el$ 降序排列，其余逻辑同面积降序版本。
 
-```
-1. 朝向决策：_orient_items(items, 'width_first')
-2. 按长边降序排列：sorted(oriented, key=-el)
-3. 其余步骤同_pack_shelf_area_desc的步骤3-6
-```
+> 1. 朝向决策：$\text{\_orient\_items}(\text{items},\; \text{`width\_first`})$
+> 2. 按长边降序排列：$\text{sorted}(\text{oriented},\; \text{key}=-el)$
+> 3. 其余步骤同 $\text{\_pack\_shelf\_area\_desc}$ 的步骤3-6
 
 ### 7.6 随机扰动优化
 
 在确定性策略基础上，增加随机扰动以跳出局部最优：
 
-```
-1. 设定随机种子 seed = 42（可复现）
-2. 重复20次：
-   a. 随机打乱产品项顺序
-   b. 对每种朝向策略（width_first, length_first）：
-      - 朝向决策 → 宽度聚类(1%/2mm) → 栈构建 → 装原片
-   c. 若原片数更少则更新最优解
-```
+> 1. 设定随机种子 $\text{seed} = 42$（可复现）
+> 2. 重复20次：
+>    a. 随机打乱产品项顺序
+>    b. 对每种朝向策略（$\text{width\_first}$, $\text{length\_first}$）：
+>       - 朝向决策 → 宽度聚类$(1\%/2\text{mm})$ → 栈构建 → 装原片
+>    c. 若原片数更少则更新最优解
 
 ### 7.7 原片合并后处理（`_consolidate_boards`）
 
 尝试将利用率低的原片上的产品项移到其他原片的剩余空间：
 
-```
-1. 若原片数 ≤ 1，直接返回
-2. 循环（直到无改进）：
-   a. 计算每个原片的利用率 util = used_area / plate_area
-   b. 按利用率升序排列
-   c. 对利用率 < 85% 的原片（源原片 src_board）：
-      i. 收集其所有产品项为 items_to_place
-      ii. 遍历其他原片（目标原片 dst_board）：
-          - 计算 used_y = max(item.y + item.width) （目标原片已用y空间）
-          - remaining_y = W - used_y
-          - 对 items_to_place 中每个项：
-            若 ew ≤ remaining_y 且 el ≤ L：
-              放置到目标原片 (x=0, y=used_y)，更新 used_y 和 remaining_y
-            否则：加入 still_remaining 列表
-          - items_to_place = still_remaining
-      iii. 若 items_to_place 为空（所有项已移走）：
-           移除源原片，标记 improved=True，跳出当前循环
-   d. 重新编号原片
-3. 返回合并后的原片列表
-```
+> 1. 若原片数 $\leq 1$，直接返回
+> 2. 循环（直到无改进）：
+>    a. 计算每个原片的利用率 $\text{util} = \text{used\_area} / \text{plate\_area}$
+>    b. 按利用率升序排列
+>    c. 对利用率 $< 85\%$ 的原片（源原片 $\text{src\_board}$）：
+>       i. 收集其所有产品项为 $\text{items\_to\_place}$
+>       ii. 遍历其他原片（目标原片 $\text{dst\_board}$）：
+>           - 计算 $y_{\text{used}} = \max(\text{item}.y + \text{item}.\text{width})$（目标原片已用 $y$ 空间）
+>           - $\text{remaining\_y} = W - y_{\text{used}}$
+>           - 对 $\text{items\_to\_place}$ 中每个项：
+>             若 $ew \leq \text{remaining\_y}$ 且 $el \leq L$：
+>               放置到目标原片 $(x=0,\; y=y_{\text{used}})$，更新 $y_{\text{used}}$ 和 $\text{remaining\_y}$
+>             否则：加入 $\text{still\_remaining}$ 列表
+>           - $\text{items\_to\_place} = \text{still\_remaining}$
+>       iii. 若 $\text{items\_to\_place}$ 为空（所有项已移走）：
+>            移除源原片，标记 $\text{improved}=\text{True}$，跳出当前循环
+>    d. 重新编号原片
+> 3. 返回合并后的原片列表
 
 ### 7.8 基础版排样器总流程（`GuillotineCutPacker.pack`）
 
-```
-输入：产品项DataFrame, 材质名
-输出：排样结果列表（CuttingBoard）
-
-1. 展开item_num为单独项（_expand_items）
-2. 3种容差 × 3种朝向 = 9种组合
-   对每种组合：_orient_items → _build_stacks → _pack_stacks_to_boards
-   保留原片数最少的解
-3. 返回最优解
-```
+> **输入**：产品项 $\text{DataFrame}$, 材质名
+> **输出**：排样结果列表（$\text{CuttingBoard}$）
+>
+> 1. 展开 $\text{item\_num}$ 为单独项（$\text{\_expand\_items}$）
+> 2. 3种容差 $\times$ 3种朝向 $= 9$ 种组合
+>    对每种组合：$\text{\_orient\_items} \to \text{\_build\_stacks} \to \text{\_pack\_stacks\_to\_boards}$
+>    保留原片数最少的解
+> 3. 返回最优解
 
 总计比较 $3 \times 3 = 9$ 种排样方案，选原片数最少的。
 
 ### 7.9 增强版排样器总流程（`EnhancedGuillotinePacker.pack`）
 
-```
-输入：产品项DataFrame, 材质名
-输出：排样结果列表（CuttingBoard）
-
-1. 展开item_num为单独项（_expand_items）
-2. 策略1：4种容差 × 3种朝向 = 12种组合
-   对每种组合：_orient_items → _build_stacks → _pack_stacks_to_boards
-   保留原片数最少的解
-3. 策略2：Shelf面积降序算法（_pack_shelf_area_desc）
-4. 策略3：Shelf长边降序算法（_pack_shelf_length_desc）
-5. 策略4：20次随机扰动 × 2种朝向 = 40种组合
-   每次随机打乱项序 → _orient_items → _build_stacks(1%/2mm) → _pack_stacks_to_boards
-6. 后处理：_consolidate_boards（合并利用率<85%的稀疏原片）
-7. 返回最优解
-```
+> **输入**：产品项 $\text{DataFrame}$, 材质名
+> **输出**：排样结果列表（$\text{CuttingBoard}$）
+>
+> 1. 展开 $\text{item\_num}$ 为单独项（$\text{\_expand\_items}$）
+> 2. 策略1：4种容差 $\times$ 3种朝向 $= 12$ 种组合
+>    对每种组合：$\text{\_orient\_items} \to \text{\_build\_stacks} \to \text{\_pack\_stacks\_to\_boards}$
+>    保留原片数最少的解
+> 3. 策略2：$\text{Shelf}$ 面积降序算法（$\text{\_pack\_shelf\_area\_desc}$）
+> 4. 策略3：$\text{Shelf}$ 长边降序算法（$\text{\_pack\_shelf\_length\_desc}$）
+> 5. 策略4：20次随机扰动 $\times$ 2种朝向 $= 40$ 种组合
+>    每次随机打乱项序 $\to$ $\text{\_orient\_items} \to$ $\text{\_build\_stacks}(1\%/2\text{mm}) \to$ $\text{\_pack\_stacks\_to\_boards}$
+> 6. 后处理：$\text{\_consolidate\_boards}$（合并利用率 $< 85\%$ 的稀疏原片）
+> 7. 返回最优解
 
 总计比较 $12 + 2 + 40 = 54$ 种排样方案，选原片数最少的。
 
@@ -486,31 +484,27 @@ $$\text{score} = \underbrace{(h_s - w_{stack}) \times l_{stack}}_{\text{高度�
 
 **核心思路**：按材质分组，每种材质内按订单面积降序贪心装批。
 
-```
-1. 统计每个订单的产品项数和总面积
-2. 按材质对订单分组（一个订单可能包含多种材质，按材质拆分）
-3. 对每种材质：
-   a. 将该材质的订单按总面积降序排列
-   b. 初始化当前批次：count=0, area=0
-   c. 对每个订单（面积降序）：
-      - 若 count + order_count ≤ 1000 且 area + order_area ≤ 250m²：
-        加入当前批次
-      - 否则：保存当前批次，创建新批次
-4. 返回所有批次
-```
+> 1. 统计每个订单的产品项数和总面积
+> 2. 按材质对订单分组（一个订单可能包含多种材质，按材质拆分）
+> 3. 对每种材质：
+>    a. 将该材质的订单按总面积降序排列
+>    b. 初始化当前批次：$\text{count}=0,\; \text{area}=0$
+>    c. 对每个订单（面积降序）：
+>       - 若 $\text{count} + \text{order\_count} \leq 1000$ 且 $\text{area} + \text{order\_area} \leq 250\text{m}^2$：
+>         加入当前批次
+>       - 否则：保存当前批次，创建新批次
+> 4. 返回所有批次
 
 ### 8.3 组批+排样联合流程
 
-```
-对每个数据集文件：
-1. 读取CSV，加载产品项
-2. 调用OrderBatcher.batch_orders进行组批
-3. 对每个批次：
-   a. 按材质分组
-   b. 对每种材质调用EnhancedGuillotinePacker.pack排样
-4. 统计总原片数和利用率
-5. 输出组批方案CSV
-```
+> 对每个数据集文件：
+> 1. 读取 $\text{CSV}$，加载产品项
+> 2. 调用 $\text{OrderBatcher.batch\_orders}$ 进行组批
+> 3. 对每个批次：
+>    a. 按材质分组
+>    b. 对每种材质调用 $\text{EnhancedGuillotinePacker.pack}$ 排样
+> 4. 统计总原片数和利用率
+> 5. 输出组批方案 $\text{CSV}$
 
 ---
 
