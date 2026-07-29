@@ -86,13 +86,23 @@ python verify_sub2.py     # 验证子问题2：越界检查 + 重叠检查（按
 ## 项目结构
 
 ```
-├── cutting_stock_solver.py    # 核心求解器（排样+组批）
+├── cutting_stock_solver.py    # 向后兼容的薄包装，重新导出 solver 包接口
 ├── run_sub1.py                # 子问题1运行入口
 ├── run_sub2.py                # 子问题2运行入口
 ├── verify_output.py           # 子问题1输出验证
 ├── verify_sub2.py             # 子问题2输出验证
 ├── model_document.md          # 数学建模文档
-├── 方形件组批优化问题.docx      # 题目文件
+│
+├── solver/                    # 核心求解器包
+│   ├── __init__.py            # 包入口，统一导出公共接口
+│   ├── params.py              # 问题参数定义（ProblemParams）
+│   ├── data_loader.py         # CSV数据加载（load_items_from_csv）
+│   ├── models.py              # 数据模型（PlacedItem, CuttingBoard）
+│   ├── packer.py              # 排样算法（GuillotineCutPacker, EnhancedGuillotinePacker）
+│   ├── batcher.py             # 订单组批（OrderBatcher）
+│   ├── visualizer.py          # 切割排布可视化（CuttingVisualizer）
+│   ├── output.py              # 结果CSV输出（generate_cut_program, generate_sum_order）
+│   └── solver.py              # 主求解流程（solve_subproblem1, solve_subproblem2, main）
 │
 ├── 子问题1-数据集A/            # 输入数据（5个CSV）
 ├── 子问题2-数据集B/            # 输入数据（5个CSV）
@@ -105,6 +115,19 @@ python verify_sub2.py     # 验证子问题2：越界检查 + 重叠检查（按
     ├── sum_order_dataB*.csv
     └── output_images/         # 排样可视化图
 ```
+
+### 模块职责说明
+
+| 模块 | 职责 | 核心类/函数 |
+|------|------|------------|
+| `solver/params.py` | 问题参数定义 | `ProblemParams` |
+| `solver/data_loader.py` | CSV数据加载与校验 | `load_items_from_csv()` |
+| `solver/models.py` | 排样数据模型 | `PlacedItem`, `CuttingBoard` |
+| `solver/packer.py` | 3阶段齐头切排样算法 | `GuillotineCutPacker`, `EnhancedGuillotinePacker` |
+| `solver/batcher.py` | 订单组批（贪心策略） | `OrderBatcher` |
+| `solver/visualizer.py` | 排样结果可视化 | `CuttingVisualizer` |
+| `solver/output.py` | CSV结果输出 | `generate_cut_program()`, `generate_sum_order()` |
+| `solver/solver.py` | 子问题求解主流程 | `solve_subproblem1()`, `solve_subproblem2()`, `main()` |
 
 ## 输出格式
 
