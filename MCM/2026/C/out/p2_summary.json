@@ -1,0 +1,51 @@
+{
+ "main": {
+  "tag": "问题2 随机规划",
+  "days": 334,
+  "total_cost": 14958845.656103084,
+  "cost_plan": 13416303.243676936,
+  "cost_adjust_extra": 0.0,
+  "cost_purchase": 13416303.243676936,
+  "cost_emergency": 1542542.412426149,
+  "energy_plan": 22026080.766301285,
+  "energy_adj": 22026080.766301285,
+  "energy_add": 402657.64949965646,
+  "energy_cur": 3166898.806741447,
+  "energy_ch": 6961316.389962258,
+  "energy_dis": 5638666.275869429,
+  "avg_day_cost": 44786.9630422248
+ },
+ "det": {
+  "tag": "对照-确定性",
+  "days": 334,
+  "total_cost": 16034960.376745686,
+  "cost_plan": 12293845.812457377,
+  "cost_adjust_extra": 0.0,
+  "cost_purchase": 12293845.812457377,
+  "cost_emergency": 3741114.5642883102,
+  "energy_plan": 20309106.405320197,
+  "energy_adj": 20309106.405320197,
+  "energy_add": 951631.84167073,
+  "energy_cur": 2035838.5182724663,
+  "energy_ch": 6766895.967114709,
+  "energy_dis": 5481185.733362915,
+  "avg_day_cost": 48008.863403430194
+ },
+ "perfect": {
+  "tag": "基准-完美信息",
+  "days": 334,
+  "total_cost": 12245046.915277628,
+  "cost_plan": 12245046.915277628,
+  "cost_adjust_extra": 0.0,
+  "cost_purchase": 12245046.915277628,
+  "cost_emergency": 4.3067321560859754e-10,
+  "energy_plan": 20218838.18025311,
+  "energy_adj": 20218838.18025311,
+  "energy_add": 1.6439116734545678e-10,
+  "energy_cur": 990168.09031214,
+  "energy_ch": 6786739.973548968,
+  "energy_dis": 5497259.378574665,
+  "avg_day_cost": 36661.817111609664
+ },
+ "base_nostorage": 16407319.63198144
+}
